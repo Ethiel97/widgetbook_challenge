@@ -11,18 +11,17 @@ class App extends StatelessWidget {
   }) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: const HomePage(),
-      theme: ThemeData.light().copyWith(
-        colorScheme: const ColorScheme.light(),
-      ),
-      darkTheme: ThemeData.dark().copyWith(
-        colorScheme: const ColorScheme.dark(),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Widgetbook Interview Challenge',
+        home: const HomePage(),
+        theme: ThemeData.light().copyWith(
+          colorScheme: const ColorScheme.light(),
+        ),
+        darkTheme: ThemeData.dark().copyWith(
+          colorScheme: const ColorScheme.dark(),
+        ),
+      );
 }
 
 /// [HomePage] widget
@@ -37,10 +36,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ///[TextEditingController] for the name textfield
+  ///[TextEditingController] for the textfield input
   late final TextEditingController _nameController;
 
-  ///Formkey for checking validation
+  ///Formkey for checking the form validation
   final _formKey = GlobalKey<FormState>();
 
   @override
