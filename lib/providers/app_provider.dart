@@ -32,7 +32,7 @@ class AppProvider with ChangeNotifier {
       appStatus = AppStatus.processing;
       notifyListeners();
 
-      context.showSnack('Processing');
+      context.showSnack('Please wait...');
 
       apiResponse = await WidgetbookApi().welcomeToWidgetbook(message: name);
       notifyListeners();

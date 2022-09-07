@@ -27,4 +27,10 @@ extension SnackUtils on BuildContext {
         ),
       );
   }
+
+  /// hide snack
+  void hideSnack(){
+    ScaffoldMessenger.of(this)
+      .hideCurrentSnackBar();
+  }
 }

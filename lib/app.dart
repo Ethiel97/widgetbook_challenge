@@ -72,62 +72,73 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) => Consumer<AppProvider>(
-        builder: (context, appProvider, _) => Scaffold(
-          appBar: AppBar(
-            title: const Text('Interview Challenge'),
-          ),
-          body: Padding(
-            padding: const EdgeInsets.all(8),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  TextFormField(
-                    keyboardType: TextInputType.name,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    controller: _nameController,
-                    validator: (value) {
-                      if (value.isValidName) {
-                        return null;
-                      }
-                      return 'Please enter valid name';
-                    },
-                    decoration: InputDecoration(
-                      labelText: 'Name',
-                      hintText: 'Enter your name',
-                      contentPadding: const EdgeInsets.all(10),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: Size(MediaQuery.of(context).size.width, 50),
-                    ),
-                    onPressed: () async {
-                      await submitForm(appProvider);
-                    },
-                    child: appProvider.appStatus == AppStatus.processing
-                        ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation(Colors.white),
-                          )
-                        : const Text('Submit'),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    appProvider.apiResponse,
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontSize: 20,
-                          color: Theme.of(context).colorScheme.onBackground,
+        builder: (context, appProvider, _) => Stack(
+          children: [
+            Scaffold(
+              appBar: AppBar(
+                title: const Text('Interview Challenge'),
+              ),
+              body: Padding(
+                padding: const EdgeInsets.all(12),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      TextFormField(
+                        keyboardType: TextInputType.name,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        controller: _nameController,
+                        validator: (value) {
+                          if (value.isValidName) {
+                            return null;
+                          }
+                          return 'Please enter valid name';
+                        },
+                        decoration: InputDecoration(
+                          labelText: 'Name',
+                          hintText: 'Enter your name',
+                          contentPadding: const EdgeInsets.all(10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
+                      ),
+                      const SizedBox(height: 20),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize:
+                              Size(MediaQuery.of(context).size.width, 45),
+                        ),
+                        onPressed: () async {
+                          await submitForm(appProvider);
+                        },
+                        child: appProvider.appStatus == AppStatus.processing
+                            ? const CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation(Colors.white),
+                              )
+                            : const Text('Submit'),
+                      ),
+                      const SizedBox(height: 20),
+                      Text(
+                        appProvider.apiResponse,
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              fontSize: 15,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
-          ),
+            if (appProvider.appStatus == AppStatus.processing)
+              const ModalBarrier(
+                color: Colors.black38,
+                dismissible: false,
+              )
+          ],
         ),
       );
 }
