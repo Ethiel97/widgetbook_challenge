@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:widgetbook_challenge/extensions/validator_extension.dart';
 import 'package:widgetbook_challenge/providers/app_provider.dart';
 
 /// The app.
@@ -12,6 +13,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: const HomePage(),
       theme: ThemeData.light().copyWith(
         colorScheme: const ColorScheme.light(),
@@ -38,9 +40,6 @@ class _HomePageState extends State<HomePage> {
   ///[TextEditingController] for the name textfield
   late final TextEditingController _nameController;
 
-  ///Validator regex for name
-  static const _nameRegex = r'^[a-zA-Z]{2,30}$';
-
   ///Formkey for checking validation
   final _formKey = GlobalKey<FormState>();
 
@@ -64,8 +63,6 @@ class _HomePageState extends State<HomePage> {
     if (_formKey.currentState!.validate()) {
       final result =
           await appProvider.submitForm(_nameController.text.trim(), context);
-
-
 
       /// do anything you want with the result
       /// whether is successful or results in an error
@@ -91,8 +88,9 @@ class _HomePageState extends State<HomePage> {
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     controller: _nameController,
                     validator: (value) {
-                      if (value == null) return null;
-                      if (RegExp(_nameRegex).hasMatch(value)) return null;
+                      if (value.isValidName) {
+                        return null;
+                      }
                       return 'Please enter valid name';
                     },
                     decoration: InputDecoration(

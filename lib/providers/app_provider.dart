@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:multiple_result/multiple_result.dart';
 import 'package:widgetbook_challenge/api/widgetbook_api.dart';
+import 'package:widgetbook_challenge/extensions/snack_extension.dart';
 
 /// status of the app
 enum AppStatus {
@@ -31,43 +32,18 @@ class AppProvider with ChangeNotifier {
       appStatus = AppStatus.processing;
       notifyListeners();
 
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            duration: const Duration(
-              seconds: 2,
-            ),
-            content: Text(
-              'Processing',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.inversePrimary,
-              ),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.primary,
-          ),
-        );
+      context.showSnack('Processing');
+
       apiResponse = await WidgetbookApi().welcomeToWidgetbook(message: name);
       notifyListeners();
 
       return Success(apiResponse);
     } catch (e) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          SnackBar(
-            duration: const Duration(
-              seconds: 2,
-            ),
-            content: Text(
-              'Please try again',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onError,
-              ),
-            ),
-            backgroundColor: Theme.of(context).errorColor,
-          ),
-        );
+      context.showSnack(
+        'Please try again',
+        backgroundColor: Theme.of(context).errorColor,
+        textColor: Theme.of(context).colorScheme.onError,
+      );
       return Error(UnexpectedException());
     } finally {
       appStatus = AppStatus.finished;
