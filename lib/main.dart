@@ -7,7 +7,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     ChangeNotifierProvider(
-      create: (context) => AppProvider(),
+      create: (context) =>  AppProvider(),
       child: const App(),
     ),
   );

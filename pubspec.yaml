@@ -11,13 +11,14 @@ dependencies:
   cupertino_icons: ^1.0.5
   flutter:
     sdk: flutter
-  multiple_result:
+  mockito:
   provider:
 
 dev_dependencies:
+  build_runner:
   flutter_test:
     sdk: flutter
-  very_good_analysis: ^3.0.1
+  very_good_analysis: ^3.0.2
 
 flutter:
   uses-material-design: true

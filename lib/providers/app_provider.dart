@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:multiple_result/multiple_result.dart';
 import 'package:widgetbook_challenge/api/widgetbook_api.dart';
+import 'package:widgetbook_challenge/app.dart';
 import 'package:widgetbook_challenge/extensions/snack_extension.dart';
 
-/// status of the app
+///this describes the different states
+///that the application takes during its execution
 enum AppStatus {
   ///initialized status
   initialized,
@@ -16,35 +17,40 @@ enum AppStatus {
 }
 
 ///
+/// a class to act as view model to handle interactions
+/// and business logic
 class AppProvider with ChangeNotifier {
-  /// initialize app status
+  /// initialized app status
+  /// this is the status of the app at the beginning
+  ///
   AppStatus appStatus = AppStatus.initialized;
 
   /// response from the widgetbook api
   String apiResponse = '';
 
-  /// function to handle form submission
-  Future<Result<Exception, String>> submitForm(
+  /// A function to handle form submission
+  /// and to perform request to the backend
+  ///
+  Future<void> submitForm(
     String name,
-    BuildContext context,
   ) async {
     try {
       appStatus = AppStatus.processing;
       notifyListeners();
 
-      context.showSnack('Please wait...');
+      NavigatorService.navigatorKey.currentContext?.showSnack('Please wait...');
 
       apiResponse = await WidgetbookApi().welcomeToWidgetbook(message: name);
       notifyListeners();
-
-      return Success(apiResponse);
     } catch (e) {
-      context.showSnack(
+      NavigatorService.navigatorKey.currentContext?.showSnack(
         'Please try again',
-        backgroundColor: Theme.of(context).errorColor,
-        textColor: Theme.of(context).colorScheme.onError,
+        backgroundColor:
+            Theme.of(NavigatorService.navigatorKey.currentContext!).errorColor,
+        textColor: Theme.of(NavigatorService.navigatorKey.currentContext!)
+            .colorScheme
+            .onError,
       );
-      return Error(UnexpectedException());
     } finally {
       appStatus = AppStatus.finished;
       notifyListeners();
